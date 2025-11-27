@@ -33,5 +33,5 @@ jobs:
       - name: Build and Deploy
         run: npm run deploy
         env:
-          VITE_GEMINI_API_KEY: ${{ secrets.VITE_GEMINI_API_KEY }}
-          GH_PAGES_TOKEN: ${{ secrets.GH_PAGES_TOKEN }}
+          VITE_GEMINI_API_KEY: ${{ secrets.VITE_GEMINI_API_KEY || '' }}
+          GH_TOKEN: ${{ secrets.GH_PAGES_TOKEN || '' }}
