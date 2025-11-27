@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import LanguageSwitcher from "./components/LanguageSwitcher";
 import LoadingScreen from "./components/LoadingScreen";
 import IntroScreen from "./components/IntroScreen";
 import QuestionView from "./components/QuestionView";
@@ -73,21 +72,14 @@ const App = () => {
 
   return (
     <div className="text-black bg-white min-h-screen selection:bg-neutral-200">
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
-        
-        body, button, input, textarea, select {
-          font-family: 'Noto Sans', 'Noto Sans SC', sans-serif !important;
-        }
-      `,
-        }}
-      />
-
-      <LanguageSwitcher currentLang={lang} setLang={setLang} />
-
-      {step === 0 && <IntroScreen onStart={startTest} t={t} />}
+      {step === 0 && (
+        <IntroScreen
+          onStart={startTest}
+          t={t}
+          currentLang={lang}
+          setLang={setLang}
+        />
+      )}
 
       {step === 1 && (
         <QuestionView

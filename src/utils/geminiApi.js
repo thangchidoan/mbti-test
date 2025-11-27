@@ -1,5 +1,15 @@
 export const fetchGeminiRecommendations = async (resultType, language) => {
-  const apiKey = ""; // API Key injected by environment
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+  
+  // Validate API key is configured
+  if (!apiKey || apiKey.trim() === "") {
+    throw new Error("Gemini API key is not configured. Please set VITE_GEMINI_API_KEY environment variable.");
+  }
+
+  // Validate result type (MBTI format)
+  if (!/^[EINSFPTJ]{4}$/.test(resultType)) {
+    throw new Error("Invalid MBTI type format.");
+  }
 
   const prompt = `
   I just took an MBTI test and my result is ${resultType}. 
@@ -21,7 +31,12 @@ export const fetchGeminiRecommendations = async (resultType, language) => {
     `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`,
     {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        "Cache-Control": "no-store, no-cache, must-revalidate",
+        "Pragma": "no-cache"
+      },
+      cache: "no-store",
       body: JSON.stringify({
         contents: [{ parts: [{ text: prompt }] }],
       }),

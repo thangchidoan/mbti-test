@@ -25,9 +25,12 @@ const ResultView = ({ result, t, lang, onRestart }) => {
       );
       setAiRecommendations(text);
     } catch (err) {
-      console.error(err);
+      console.error("Error fetching AI recommendations:", err.message);
+      setAiError(err.message);
+      // Use fallback recommendations after a brief delay
       setTimeout(() => {
         setAiRecommendations(getFallbackRecommendations());
+        setAiError(null);
         setLoadingAI(false);
       }, 1000);
     } finally {
@@ -114,6 +117,12 @@ const ResultView = ({ result, t, lang, onRestart }) => {
                 <span className="text-neutral-500 text-xs font-bold uppercase tracking-widest">
                   {t.processing}
                 </span>
+              </div>
+            )}
+
+            {aiError && !loadingAI && (
+              <div className="bg-red-50 border border-red-200 p-4 rounded text-center mb-6">
+                <p className="text-red-700 text-sm font-medium">{aiError}</p>
               </div>
             )}
 

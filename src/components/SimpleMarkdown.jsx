@@ -3,8 +3,21 @@ import React from "react";
 const SimpleMarkdown = ({ text }) => {
   if (!text) return null;
 
+  // Sanitize text to prevent XSS attacks
+  const sanitizeText = (str) => {
+    if (typeof str !== "string") return "";
+    // Remove potentially dangerous characters and patterns
+    return str
+      .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
+      .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, "")
+      .replace(/on\w+\s*=\s*["'][^"']*["']/gi, "")
+      .replace(/javascript:/gi, "")
+      .replace(/<\/?[^>]+(>|$)/g, "");
+  };
+
   const parseInlineStyles = (str) => {
-    const parts = str.split(/(\*\*.*?\*\*)/);
+    const sanitized = sanitizeText(str);
+    const parts = sanitized.split(/(\*\*.*?\*\*)/);
     return parts.map((part, i) => {
       if (part.startsWith("**") && part.endsWith("**")) {
         return (
@@ -35,7 +48,7 @@ const SimpleMarkdown = ({ text }) => {
             <ul key={index} className="space-y-3 my-4">
               {items.map((item, i) => {
                 const cleanItem = item
-                  .replace(/^[\*\-]\s*/, "")
+                  .replace(/^[*-]\s*/, "")
                   .replace(/^\d+\.\s*/, "");
                 return (
                   <li

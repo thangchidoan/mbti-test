@@ -1,8 +1,10 @@
 import React from "react";
 import { Brain } from "lucide-react";
+import LanguageSwitcher from "./LanguageSwitcher";
 
-const IntroScreen = ({ onStart, t }) => (
+const IntroScreen = ({ onStart, t, currentLang, setLang }) => (
   <div className="flex flex-col items-center justify-center min-h-screen text-center max-w-4xl mx-auto px-4 relative pt-12 pb-8">
+    <LanguageSwitcher currentLang={currentLang} setLang={setLang} />
     <div className="mb-6 md:mb-8 p-4 md:p-6 border-2 border-black rounded-full">
       <Brain
         className="w-12 h-12 md:w-16 md:h-16 text-black"
