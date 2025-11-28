@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Briefcase, RefreshCw, Loader2 } from "lucide-react";
 import { DIMENSIONS } from "../constants/dimensions";
-import SimpleMarkdown from "./SimpleMarkdown";
+import { marked } from "marked";
 import {
   fetchGeminiRecommendations,
   getFallbackRecommendations,
@@ -128,7 +128,12 @@ const ResultView = ({ result, t, lang, onRestart }) => {
 
             {aiRecommendations && (
               <div className="">
-                <SimpleMarkdown text={aiRecommendations} />
+                <div
+                  className="prose prose-neutral max-w-none text-sm md:text-base prose-headings:font-bold prose-headings:tracking-tight prose-h1:text-2xl prose-h1:md:text-3xl prose-h2:text-xl prose-h2:md:text-2xl prose-h3:text-lg prose-h3:md:text-xl prose-headings:text-black prose-headings:mb-4"
+                  dangerouslySetInnerHTML={{
+                    __html: marked(aiRecommendations),
+                  }}
+                />
 
                 <button
                   onClick={handleFetchRecommendations}
